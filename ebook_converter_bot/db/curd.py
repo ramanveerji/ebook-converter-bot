@@ -43,14 +43,13 @@ def increment_usage(user_id: int):
 
 
 def update_language(user_id: int, language: str):
-    chat: Preference = (
+    if chat := (
         session.query(Preference).filter(Preference.user_id == user_id).first()
-    )
-    if not chat:
+    ):
+        chat.language = language
+    else:
         chat = Preference(user_id=user_id, language=language)
         session.add(chat)
-    else:
-        chat.language = language
     session.commit()
 
 
